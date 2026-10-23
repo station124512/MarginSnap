@@ -1,5 +1,6 @@
-# 🚀 셀러마진 119 (SellerMargin 119)
-> **초보 및 글로벌 셀러를 위한 역마진 제로(0%) 스마트 마진 계산기 & 목표 마진 역산 솔루션**  
+# ⚡ 마진스냅 (MarginSnap)
+> **플랫폼 수수료 털고 내 통장에 남는 돈**  
+> *Real Profit in Your Pocket After Platform Fees*  
 > *Global Smart Margin & Reverse Pricing Calculator for E-Commerce Sellers*
 
 <div align="center">
@@ -16,9 +17,9 @@
 
 ## 📌 프로젝트 소개 (Overview)
 
-온라인 이커머스에 진입하는 초보 셀러들의 가장 큰 페인 포인트인 **"물건은 많이 팔리는데 정산받고 나면 통장에 남는 돈이 없거나 적자(역마진)가 발생하는 문제"**를 원천 해결하기 위해 제작된 웹 애플리케이션입니다.
+**마진스냅 (MarginSnap)**은 국내외 이커머스 셀러들이 겪는 **"물건은 많이 팔리는데 정산받고 나면 통장에 남는 돈이 없거나 적자(역마진)가 발생하는 문제"**를 해결하는 스마트 실마진 계산 및 판매가 역산 솔루션입니다.
 
-토스(Toss)와 모던 핀테크 SaaS 스타일의 깔끔하고 직관적인 UI를 제공하며, 국내외 8대 주요 이커머스 플랫폼의 복잡한 수수료 구조(부가세 별도, 배송비 수수료 등)와 숨은 비용(포장비, 반품 충당금, 광고비, 세금)을 1원/1센트 단위로 정밀하게 계산합니다.
+토스(Toss) 스타일의 미니멀하고 직관적인 핀테크 UI를 통해, 국내외 8대 주요 플랫폼의 복잡한 수수료 체계(부가세 별도 부과, 배송비 수수료 등)와 숨겨진 원가(포장비, 반품 충당금, 광고비, 세금)를 1원/1센트 단위로 정밀하게 계산해 드립니다.
 
 ---
 
@@ -33,7 +34,6 @@
 - 순이익이 마이너스(< 0원)가 되는 즉시 붉은색 경고 박스와 흔들림(Shake) 효과로 출혈 판매를 원천 차단
 
 ### 3. 🎯 목표 마진 판매가 역산기 (Reverse Pricing Engine)
-- *"사입가 10,000원에 순마진 20%를 남기려면 얼마에 팔아야 하지?"*
 - 원하는 순마진율(%) 또는 목표 순이익 금액을 입력하면, 플랫폼 수수료와 세금을 모두 감안한 **최적 권장 판매가를 자동 역산**하고 계산기에 원클릭 동기화
 
 ### 4. 🌐 8대 글로벌 플랫폼 & 3개 통화 연동
@@ -52,7 +52,10 @@
 
 ### 5. 🌍 4개 국어 다국어 지원 (i18n)
 - 상단 우측 토글을 통해 **한국어(KO), 영어(EN), 일본어(日本語), 중국어(中文)**를 원클릭으로 실시간 전환
-- 모든 라벨, 진단 메시지, 영수증, 툴팁이 완벽 번역 연동
+  - **[KO]** 마진스냅 (MarginSnap) - 플랫폼 수수료 털고 내 통장에 남는 돈
+  - **[EN]** MarginSnap - Real Profit in Your Pocket After Platform Fees
+  - **[JA]** MarginSnap - 手数料を引いた本当の純利益
+  - **[ZH]** MarginSnap (利润快算) - 扣除平台费用后的真实到手利润
 
 ### 6. 🧾 영수증 카드 팝업 & 클립보드 복사 & 로컬 저장
 - 종이 영수증 감성의 정산 명세서 팝업 (인쇄 및 SNS 질문/인증용)
@@ -61,44 +64,13 @@
 
 ---
 
-## 📂 프로젝트 문서 (Documentation)
-
-- [docs/01_PRD.md](docs/01_PRD.md) : 제품 요구사항 정의서 (페르소나, 핵심 지표, 계산 공식 상세)
-- [docs/02_SPEC.md](docs/02_SPEC.md) : 개발자용 기술 명세서 (TypeScript 인터페이스, 단위 테스트 케이스)
-- [docs/03_MARKETING.md](docs/03_MARKETING.md) : 랜딩페이지 카피라이팅 & 셀러 커뮤니티 바이럴 텍스트
-
----
-
-## 🛠️ 기술 스택 (Tech Stack)
-
-- **Frontend**: React 18, TypeScript, Vite
-- **Styling**: Tailwind CSS (Toss Fintech Style Guide)
-- **Icons**: Lucide React
-- **Storage**: Browser LocalStorage (서버 전송 없는 100% 개인정보 안전 구조)
-
----
-
 ## 💻 로컬 실행 방법 (Getting Started)
 
-### 1. 저장소 클론 및 패키지 설치
 ```bash
 git clone <repository-url>
 cd <project-folder>
 npm install
-```
-
-### 2. 개발 서버 실행
-```bash
 npm run dev
 ```
+
 브라우저에서 `http://localhost:5173/`으로 접속합니다.
-
-### 3. 프로덕션 빌드
-```bash
-npm run build
-```
-
----
-
-## 📄 라이선스 (License)
-MIT License. 자유롭게 수정 및 배포하실 수 있습니다.

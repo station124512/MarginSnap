@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calculator, Target, Globe } from 'lucide-react';
+import { Calculator, Target, Globe, Zap } from 'lucide-react';
 import { MarginInputState, Language } from '../types/margin';
 import { TranslationDictionary } from '../constants/translations';
 
@@ -27,7 +27,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <header className="mb-8">
-      {/* 상단 최상위: 언어 선택 토글 바 (우측 정렬) */}
+      {/* 상단 최상위: 태그 및 언어 선택 토글 바 (우측 정렬) */}
       <div className="flex items-center justify-between pb-4 mb-4 border-b border-slate-200/60">
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-100">
@@ -63,13 +63,29 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        {/* 서비스 타이틀 & 슬로건 */}
+        {/* 서비스 타이틀 & 슬로건 (마진스냅 MarginSnap) */}
         <div>
-          <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
-            {t.appTitle.split(' ')[0]}{' '}
-            <span className="text-blue-600">{t.appTitle.split(' ')[1] || '119'}</span>
-          </h1>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+          <div className="flex items-center gap-2.5">
+            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm shadow-sm shadow-blue-500/25">
+              <Zap className="w-4 h-4 fill-current" />
+            </span>
+            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+              {language === 'KO' ? (
+                <>
+                  마진스냅 <span className="text-blue-600 font-extrabold text-xl sm:text-2xl">(MarginSnap)</span>
+                </>
+              ) : language === 'ZH' ? (
+                <>
+                  MarginSnap <span className="text-blue-600 text-xl sm:text-2xl font-bold">(利润快算)</span>
+                </>
+              ) : (
+                <>
+                  Margin<span className="text-blue-600">Snap</span>
+                </>
+              )}
+            </h1>
+          </div>
+          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5">
             {t.subTagline}
           </p>
         </div>
