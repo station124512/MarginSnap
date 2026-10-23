@@ -64,29 +64,95 @@ export const Header: React.FC<HeaderProps> = ({
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
         {/* 서비스 로고 및 타이틀 & 슬로건 (마진스냅 MarginSnap) */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          <img
-            src="/logo.png"
-            alt="마진스냅 (MarginSnap) 로고"
-            className="h-12 sm:h-14 w-auto object-contain rounded-2xl shadow-sm border border-slate-200/80 bg-white p-1 hover:scale-105 transition-transform duration-200"
-          />
-          <div>
-            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 leading-tight">
+        <div className="flex items-center gap-3 group">
+          {/* 심볼 아이콘: 포커스 프레임 [ ] + 상승 화살표 ↗ + 퍼센트 기호 % 결합형 모던 벡터 마크 */}
+          <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-indigo-600 via-blue-600 to-emerald-500 p-2 flex items-center justify-center shadow-md shadow-indigo-500/20 shrink-0 group-hover:scale-105 transition-transform duration-200">
+            <svg
+              viewBox="0 0 36 36"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-full h-full text-white"
+              aria-label="MarginSnap Logo Icon"
+            >
+              {/* 포커스 프레임 브래킷 [ ] */}
+              <path
+                d="M6 12V8C6 6.89543 6.89543 6 8 6H12"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeOpacity="0.85"
+              />
+              <path
+                d="M24 6H28C29.1046 6 30 6.89543 30 8V12"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeOpacity="0.85"
+              />
+              <path
+                d="M6 24V28C6 29.1046 6.89543 30 8 30H12"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeOpacity="0.85"
+              />
+              <path
+                d="M24 30H28C29.1046 30 30 29.1046 30 28V24"
+                stroke="currentColor"
+                strokeWidth="2.4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeOpacity="0.85"
+              />
+
+              {/* 수익 상승 화살표 ↗ */}
+              <path
+                d="M12 24L23.5 12.5"
+                stroke="currentColor"
+                strokeWidth="2.8"
+                strokeLinecap="round"
+              />
+              <path
+                d="M16.5 12.5H23.5V19.5"
+                stroke="currentColor"
+                strokeWidth="2.8"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+
+              {/* 마진율 % 도트 노드 */}
+              <circle cx="13.5" cy="14" r="2" fill="currentColor" />
+              <circle cx="22.5" cy="22" r="2" fill="currentColor" />
+            </svg>
+          </div>
+
+          {/* 오른쪽 텍스트: 타이틀과 슬로건 완벽 수평 정렬 */}
+          <div className="flex flex-col justify-center min-w-0">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 leading-none">
               {language === 'KO' ? (
                 <>
-                  마진스냅 <span className="text-blue-600 font-extrabold text-lg sm:text-xl">(MarginSnap)</span>
+                  마진스냅{' '}
+                  <span className="text-blue-600 font-extrabold text-lg sm:text-xl">
+                    (MarginSnap)
+                  </span>
                 </>
               ) : language === 'ZH' ? (
                 <>
-                  MarginSnap <span className="text-blue-600 text-lg sm:text-xl font-bold">(利润快算)</span>
+                  MarginSnap{' '}
+                  <span className="text-blue-600 font-extrabold text-lg sm:text-xl">
+                    (利润快算)
+                  </span>
                 </>
               ) : (
                 <>
-                  Margin<span className="text-blue-600">Snap</span>
+                  Margin<span className="text-blue-600 font-black">Snap</span>
                 </>
               )}
             </h1>
-            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1 truncate sm:whitespace-normal">
               {t.subTagline}
             </p>
           </div>
