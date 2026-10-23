@@ -133,11 +133,11 @@ export function useMarginCalculator() {
     } catch (e) {}
   }, [history]);
 
-  const showToast = (msg: string) => {
+  const showToast = (msg: string, duration = 2000) => {
     setToastMessage(msg);
     setTimeout(() => {
       setToastMessage(null);
-    }, 3000);
+    }, duration);
   };
 
   // 플랫폼 변경 시 통화 변환 및 카테고리 매핑
@@ -147,7 +147,6 @@ export function useMarginCalculator() {
     const defaultCat = nextConfig?.categories[0]?.id || '';
     const defaultRate = nextConfig?.defaultFeeRate || 10.0;
 
-    // 통화가 달라질 때 기본 샘플 수치로 자동 변환하여 비현실적인 숫자 방지
     const needCurrencyConvert = prevConfig.currency !== nextConfig.currency;
     const sample = DEFAULT_SAMPLE_VALUES[nextConfig.currency];
 
@@ -225,12 +224,12 @@ export function useMarginCalculator() {
     };
 
     setHistory((prev) => [newHistoryItem, ...prev.slice(0, 9)]);
-    showToast(t.savedToast);
+    showToast(t.savedToast, 2000);
   };
 
   const loadHistoryItem = (item: CalculationHistoryItem) => {
     setInput(item.input);
-    showToast(t.loadedToast);
+    showToast(t.loadedToast, 2000);
   };
 
   const deleteHistoryItem = (id: string) => {
@@ -239,24 +238,52 @@ export function useMarginCalculator() {
 
   const clearAllHistory = () => {
     setHistory([]);
-    showToast(t.clearedToast);
+    showToast(t.clearedToast, 2000);
   };
 
-  // 클립보드 복사용 텍스트 (다국어 & 통화 반영)
+  // 1. 단톡방/메모장용 깔끔한 한 줄/포맷형 [결과 요약 복사]
+  const copyQuickSummaryText = () => {
+    const platformConfig = PLATFORM_PRESETS[input.platform];
+    const cur = platformConfig.currency;
+
+    let feeRate = input.customFeeRate;
+    if (input.platform !== 'CUSTOM') {
+      const matchedCategory = platformConfig.categories.find((c) => c.id === input.category);
+      feeRate = matchedCategory ? matchedCategory.feeRate : platformConfig.defaultFeeRate;
+    }
+
+    const platformDisplayName = platformConfig.name.split(' ')[0];
+
+    const text = `-------------------------------
+${t.shareCopyHeader}
+• ${t.shareCopyPlatform}: ${platformDisplayName} (${t.shareCopyFeeWord} ${feeRate}%)
+• ${t.shareCopyPriceCost}: ${formatCurrency(input.salePrice, cur)} | ${t.shareCopyCost}: ${formatCurrency(input.productCost, cur)}
+• ${t.shareCopyPayout}: ${formatCurrency(result.settlementAmount, cur)}
+• ${t.shareCopyNetMargin}: ${formatCurrency(result.netProfit, cur)} (${t.shareCopyMarginRate} ${result.marginRate}%)
+${t.shareCopyCta}
+-------------------------------`;
+
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(t.copiedToast, 2000);
+    });
+  };
+
+  // 2. 상세 복사용 텍스트
   const copySummaryText = () => {
     const platformConfig = PLATFORM_PRESETS[input.platform];
+    const cur = platformConfig.currency;
     const summary = `[${t.appTitle} - ${t.receiptTitle}]
 - Platform: ${platformConfig.name} (${platformConfig.currency})
-- ${t.salePrice}: ${formatCurrency(input.salePrice, platformConfig.currency)} (${t.customerShippingFee}: ${formatCurrency(input.customerShippingFee, platformConfig.currency)})
-- ${t.productCost}: ${formatCurrency(input.productCost, platformConfig.currency)}
-- ${t.flowFee}: ${formatCurrency(result.totalPlatformFee, platformConfig.currency)}
-- ${t.flowSettlement}: ${formatCurrency(result.settlementAmount, platformConfig.currency)}
-- ${t.netProfitLabel}: ${formatCurrency(result.netProfit, platformConfig.currency)}
+- ${t.salePrice}: ${formatCurrency(input.salePrice, cur)} (${t.customerShippingFee}: ${formatCurrency(input.customerShippingFee, cur)})
+- ${t.productCost}: ${formatCurrency(input.productCost, cur)}
+- ${t.flowFee}: ${formatCurrency(result.totalPlatformFee, cur)}
+- ${t.flowSettlement}: ${formatCurrency(result.settlementAmount, cur)}
+- ${t.netProfitLabel}: ${formatCurrency(result.netProfit, cur)}
 - ${t.marginRateLabel}: ${result.marginRate}% (ROI: ${result.roi}%)
 - Status: ${result.healthTitle}`;
 
     navigator.clipboard.writeText(summary).then(() => {
-      showToast(t.copiedToast);
+      showToast(t.copiedToast, 2000);
     });
   };
 
@@ -275,7 +302,7 @@ export function useMarginCalculator() {
       customFeeRate: reverseInput.customFeeRate,
       calculatorMode: 'STANDARD',
     }));
-    showToast(t.appliedReverseToast);
+    showToast(t.appliedReverseToast, 2000);
   };
 
   return {
@@ -301,6 +328,7 @@ export function useMarginCalculator() {
     loadHistoryItem,
     deleteHistoryItem,
     clearAllHistory,
+    copyQuickSummaryText,
     copySummaryText,
     applyReversePriceToStandard,
     resetToDefaults: () => {
@@ -314,7 +342,7 @@ export function useMarginCalculator() {
         packagingCost: sample.packagingCost,
         adCostPerUnit: sample.adCostPerUnit,
       }));
-      showToast(t.reset);
+      showToast(t.reset, 2000);
     },
   };
 }

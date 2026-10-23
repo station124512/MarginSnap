@@ -10,6 +10,7 @@ interface ResultDashboardProps {
   input: MarginInputState;
   result: MarginResult;
   copySummaryText: () => void;
+  copyQuickSummaryText: () => void;
   saveCurrentToHistory: () => void;
   setIsReceiptOpen: (open: boolean) => void;
   t: TranslationDictionary;
@@ -19,6 +20,7 @@ export const ResultDashboard: React.FC<ResultDashboardProps> = ({
   input,
   result,
   copySummaryText,
+  copyQuickSummaryText,
   saveCurrentToHistory,
   setIsReceiptOpen,
   t,
@@ -137,6 +139,16 @@ export const ResultDashboard: React.FC<ResultDashboardProps> = ({
           </div>
         </div>
       </div>
+
+      {/* 2.5 눈에 띄는 알약형(Pill) [결과 요약 복사하기] 버튼 */}
+      <button
+        type="button"
+        onClick={copyQuickSummaryText}
+        className="w-full flex items-center justify-center gap-2.5 py-4 px-6 bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-extrabold text-sm sm:text-base rounded-full shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 transition-all duration-300 transform active:scale-95 cursor-pointer group"
+      >
+        <span className="text-xl group-hover:scale-125 transition-transform duration-200">📋</span>
+        <span className="tracking-tight">{t.btnQuickCopy}</span>
+      </button>
 
       {/* 3. 비용 비중 차트 */}
       <CostDonutChart

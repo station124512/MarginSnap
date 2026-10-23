@@ -57,6 +57,7 @@ export interface TranslationDictionary {
   flowFee: string;
   flowSettlement: string;
   btnCopy: string;
+  btnQuickCopy: string;
   btnReceipt: string;
   btnSave: string;
   reverseTitle: string;
@@ -88,6 +89,15 @@ export interface TranslationDictionary {
   loadedToast: string;
   clearedToast: string;
   appliedReverseToast: string;
+  shareCopyHeader: string;
+  shareCopyPlatform: string;
+  shareCopyFeeWord: string;
+  shareCopyPriceCost: string;
+  shareCopyCost: string;
+  shareCopyPayout: string;
+  shareCopyNetMargin: string;
+  shareCopyMarginRate: string;
+  shareCopyCta: string;
 }
 
 export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
@@ -147,7 +157,8 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     flowRevenue: '고객 결제 총액 (판매가+배송비)',
     flowFee: '플랫폼 공제 수수료',
     flowSettlement: '실 통장 정산 예정액',
-    btnCopy: '결과 복사',
+    btnCopy: '상세 복사',
+    btnQuickCopy: '결과 요약 복사하기',
     btnReceipt: '영수증 카드',
     btnSave: '내역 저장',
     reverseTitle: '목표 마진 판매가 역산기',
@@ -174,11 +185,20 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     guide3Title: '3. 손익분기 광고 ROAS (BEP)',
     guide3Desc: '순마진율에 맞는 최소 광고 수익률을 지켜야 광고비로 인한 적자를 방지할 수 있습니다.',
     footerNotice: '© 2026 마진스냅 (MarginSnap) · 모든 입력값과 계산 내역은 사용자 기기(LocalStorage)에만 안전하게 보관됩니다.',
-    copiedToast: '📋 결과 요약 텍스트가 클립보드에 복사되었습니다!',
+    copiedToast: '클립보드에 복사되었습니다! 🎉',
     savedToast: '💾 현재 계산 결과가 히스토리에 저장되었습니다.',
     loadedToast: '📂 계산 내역을 불러왔습니다.',
     clearedToast: '히스토리가 비워졌습니다.',
     appliedReverseToast: '🎯 역산된 권장 판매가가 실시간 계산기에 적용되었습니다!',
+    shareCopyHeader: '[마진스냅 (MarginSnap) 계산 결과]',
+    shareCopyPlatform: '플랫폼',
+    shareCopyFeeWord: '수수료',
+    shareCopyPriceCost: '판매가',
+    shareCopyCost: '매입원가',
+    shareCopyPayout: '내 통장 실수령액',
+    shareCopyNetMargin: '최종 순마진',
+    shareCopyMarginRate: '순마진율',
+    shareCopyCta: '👉 마진스냅에서 내 마진 3초 컷 계산하기',
   },
   EN: {
     appTitle: 'MarginSnap',
@@ -236,7 +256,8 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     flowRevenue: 'Gross Revenue (Price + Shipping)',
     flowFee: 'Platform Deduction Fee',
     flowSettlement: 'Estimated Payout Amount',
-    btnCopy: 'Copy Summary',
+    btnCopy: 'Copy Details',
+    btnQuickCopy: 'Copy Quick Summary',
     btnReceipt: 'Receipt Card',
     btnSave: 'Save History',
     reverseTitle: 'Target Margin Reverse Calculator',
@@ -263,11 +284,20 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     guide3Title: '3. Break-even ROAS (BEP)',
     guide3Desc: 'Stay above your BEP ROAS to ensure you are not funding platform ads out of your own pocket.',
     footerNotice: '© 2026 MarginSnap · All input and calculation data are stored locally in your browser.',
-    copiedToast: '📋 Summary copied to clipboard!',
+    copiedToast: 'Copied to clipboard! 🎉',
     savedToast: '💾 Calculation saved to history.',
     loadedToast: '📂 Calculation loaded from history.',
     clearedToast: 'History cleared.',
     appliedReverseToast: '🎯 Recommended price applied to calculator!',
+    shareCopyHeader: '[MarginSnap Calculation Result]',
+    shareCopyPlatform: 'Platform',
+    shareCopyFeeWord: 'Fee',
+    shareCopyPriceCost: 'Price',
+    shareCopyCost: 'Product Cost',
+    shareCopyPayout: 'Net Payout to Bank',
+    shareCopyNetMargin: 'Final Net Profit',
+    shareCopyMarginRate: 'Net Margin',
+    shareCopyCta: '👉 Calculate your margins in 3 seconds on MarginSnap',
   },
   JA: {
     appTitle: 'MarginSnap',
@@ -325,7 +355,8 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     flowRevenue: '購入者決済総額 (価格+送料)',
     flowFee: 'モール控除手数料',
     flowSettlement: '口座振込予定額',
-    btnCopy: '結果コピー',
+    btnCopy: '詳細コピー',
+    btnQuickCopy: '結果サマリーをコピー',
     btnReceipt: '領収書カード',
     btnSave: '履歴保存',
     reverseTitle: '目標利益率から販売価格を逆算',
@@ -352,11 +383,20 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     guide3Title: '3. 損益分岐広告ROAS',
     guide3Desc: '利益率に見合った最低限の広告回収率を下回らないことが赤字防止の鉄則です。',
     footerNotice: '© 2026 MarginSnap · 入力データはブラウザ（ローカル）にのみ安全に保存されます。',
-    copiedToast: '📋 結果テキストをクリップボードにコピーしました！',
+    copiedToast: 'クリップボードにコピーしました！🎉',
     savedToast: '💾 計算結果が履歴に保存されました。',
     loadedToast: '📂 履歴データを読み込みました。',
     clearedToast: '履歴を削除しました。',
     appliedReverseToast: '🎯 逆算推奨価格を計算機に適用しました！',
+    shareCopyHeader: '[MarginSnap 利益計算サマリー]',
+    shareCopyPlatform: 'プラットフォーム',
+    shareCopyFeeWord: '手数料',
+    shareCopyPriceCost: '販売価格',
+    shareCopyCost: '仕入原価',
+    shareCopyPayout: '通帳受取額',
+    shareCopyNetMargin: '最終純利益',
+    shareCopyMarginRate: '純利益率',
+    shareCopyCta: '👉 MarginSnapで純利益を3秒スピード診断',
   },
   ZH: {
     appTitle: 'MarginSnap (利润快算)',
@@ -414,7 +454,8 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     flowRevenue: '买家实付总金额 (售价+运费)',
     flowFee: '平台扣除总费用',
     flowSettlement: '预计银行到账金额',
-    btnCopy: '复制结果',
+    btnCopy: '详细复制',
+    btnQuickCopy: '复制测算摘要',
     btnReceipt: '结算小票',
     btnSave: '保存记录',
     reverseTitle: '目标利润售价逆算器',
@@ -441,10 +482,19 @@ export const TRANSLATIONS: Record<Language, TranslationDictionary> = {
     guide3Title: '3. 保本广告投产比 (BEP ROAS)',
     guide3Desc: '务必守住自身的保本ROAS红线，防止广告投流给平台做嫁衣。',
     footerNotice: '© 2026 MarginSnap · 所有测算数据均加密保存在用户浏览器本地，绝不上云。',
-    copiedToast: '📋 测算摘要已成功复制至剪贴板！',
+    copiedToast: '已成功复制到剪贴板！🎉',
     savedToast: '💾 当前测算结果已成功保存至历史记录。',
     loadedToast: '📂 已载入历史测算数据。',
     clearedToast: '历史记录已清空。',
     appliedReverseToast: '🎯 逆算推荐售价已同步应用至实时计算器！',
+    shareCopyHeader: '[MarginSnap (利润快算) 测算结果]',
+    shareCopyPlatform: '销售平台',
+    shareCopyFeeWord: '佣金',
+    shareCopyPriceCost: '销售价格',
+    shareCopyCost: '采购成本',
+    shareCopyPayout: '实际到手金额',
+    shareCopyNetMargin: '最终纯利润',
+    shareCopyMarginRate: '纯利润率',
+    shareCopyCta: '👉 立即使用 MarginSnap 3秒极速核算真实到手利润',
   },
 };

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calculator, Target, Globe, Zap } from 'lucide-react';
+import { Calculator, Target, Globe } from 'lucide-react';
 import { MarginInputState, Language } from '../types/margin';
 import { TranslationDictionary } from '../constants/translations';
 
@@ -63,20 +63,22 @@ export const Header: React.FC<HeaderProps> = ({
       </div>
 
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-5">
-        {/* 서비스 타이틀 & 슬로건 (마진스냅 MarginSnap) */}
-        <div>
-          <div className="flex items-center gap-2.5">
-            <span className="flex items-center justify-center w-8 h-8 rounded-xl bg-blue-600 text-white font-black text-sm shadow-sm shadow-blue-500/25">
-              <Zap className="w-4 h-4 fill-current" />
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-slate-900">
+        {/* 서비스 로고 및 타이틀 & 슬로건 (마진스냅 MarginSnap) */}
+        <div className="flex items-center gap-3 sm:gap-4">
+          <img
+            src="/logo.png"
+            alt="마진스냅 (MarginSnap) 로고"
+            className="h-12 sm:h-14 w-auto object-contain rounded-2xl shadow-sm border border-slate-200/80 bg-white p-1 hover:scale-105 transition-transform duration-200"
+          />
+          <div>
+            <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900 leading-tight">
               {language === 'KO' ? (
                 <>
-                  마진스냅 <span className="text-blue-600 font-extrabold text-xl sm:text-2xl">(MarginSnap)</span>
+                  마진스냅 <span className="text-blue-600 font-extrabold text-lg sm:text-xl">(MarginSnap)</span>
                 </>
               ) : language === 'ZH' ? (
                 <>
-                  MarginSnap <span className="text-blue-600 text-xl sm:text-2xl font-bold">(利润快算)</span>
+                  MarginSnap <span className="text-blue-600 text-lg sm:text-xl font-bold">(利润快算)</span>
                 </>
               ) : (
                 <>
@@ -84,10 +86,10 @@ export const Header: React.FC<HeaderProps> = ({
                 </>
               )}
             </h1>
+            <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1">
+              {t.subTagline}
+            </p>
           </div>
-          <p className="text-xs sm:text-sm text-slate-500 font-medium mt-1.5">
-            {t.subTagline}
-          </p>
         </div>
 
         {/* 토스 스타일 알약형(Pill) 탭 스위처 */}

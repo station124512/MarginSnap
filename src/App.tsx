@@ -14,11 +14,11 @@ export const App: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] text-slate-900 py-8 sm:py-12 px-4 sm:px-6 lg:px-8 selection:bg-blue-600 selection:text-white">
-      {/* 토스 스타일 부드러운 토스트 알림 */}
+      {/* 플로팅 토스트 알림 (2초 지속) */}
       {calc.toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 bg-slate-900/95 backdrop-blur-md text-white text-xs sm:text-sm font-bold py-3.5 px-5 rounded-full shadow-xl border border-slate-800 flex items-center gap-2 animate-bounce">
-          <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-          {calc.toastMessage}
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 bg-slate-900/95 backdrop-blur-md text-white text-xs sm:text-sm font-bold py-3.5 px-6 rounded-full shadow-2xl border border-slate-700/80 flex items-center gap-2.5 animate-bounce">
+          <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+          <span>{calc.toastMessage}</span>
         </div>
       )}
 
@@ -64,6 +64,7 @@ export const App: React.FC = () => {
                 input={calc.input}
                 result={calc.result}
                 copySummaryText={calc.copySummaryText}
+                copyQuickSummaryText={calc.copyQuickSummaryText}
                 saveCurrentToHistory={calc.saveCurrentToHistory}
                 setIsReceiptOpen={calc.setIsReceiptOpen}
                 t={t}
