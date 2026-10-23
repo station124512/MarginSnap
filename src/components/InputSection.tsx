@@ -32,17 +32,23 @@ export const InputSection: React.FC<InputSectionProps> = ({
   };
 
   const handlePriceInput = (field: keyof MarginInputState, valStr: string) => {
+    const MAX_LIMIT = isUSD ? 1_000_000 : 100_000_000; // 최대 1억원 / $1M 제한
+    // 다중 줄 붙여넣기 시 첫 번째 줄의 숫자만 추출하여 접합 방지
+    const firstSegment = valStr.trim().split(/[\r\n|,/]/)[0] || '';
+
     if (isUSD) {
-      // USD 소수점 허용
-      const cleaned = valStr.replace(/[^0-9.]/g, '');
+      const cleaned = firstSegment.replace(/[^0-9.]/g, '');
       const parts = cleaned.split('.');
       const formatted = parts.length > 2 ? `${parts[0]}.${parts.slice(1).join('')}` : cleaned;
-      const num = formatted === '' ? 0 : parseFloat(formatted);
-      updateField(field, isNaN(num) ? 0 : num);
+      let num = formatted === '' ? 0 : parseFloat(formatted);
+      if (isNaN(num)) num = 0;
+      if (num > MAX_LIMIT) num = MAX_LIMIT;
+      updateField(field, num);
     } else {
-      // KRW / JPY 정수
-      const cleaned = valStr.replace(/[^0-9]/g, '');
-      const num = cleaned === '' ? 0 : parseInt(cleaned, 10);
+      const cleaned = firstSegment.replace(/[^0-9]/g, '');
+      let num = cleaned === '' ? 0 : parseInt(cleaned, 10);
+      if (isNaN(num)) num = 0;
+      if (num > MAX_LIMIT) num = MAX_LIMIT;
       updateField(field, num);
     }
   };

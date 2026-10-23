@@ -32,15 +32,22 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
   };
 
   const handlePriceInput = (field: keyof ReverseInputState, valStr: string) => {
+    const MAX_LIMIT = isUSD ? 1_000_000 : 100_000_000;
+    const firstSegment = valStr.trim().split(/[\r\n|,/]/)[0] || '';
+
     if (isUSD) {
-      const cleaned = valStr.replace(/[^0-9.]/g, '');
+      const cleaned = firstSegment.replace(/[^0-9.]/g, '');
       const parts = cleaned.split('.');
       const formatted = parts.length > 2 ? `${parts[0]}.${parts.slice(1).join('')}` : cleaned;
-      const num = formatted === '' ? 0 : parseFloat(formatted);
-      updateField(field, isNaN(num) ? 0 : num);
+      let num = formatted === '' ? 0 : parseFloat(formatted);
+      if (isNaN(num)) num = 0;
+      if (num > MAX_LIMIT) num = MAX_LIMIT;
+      updateField(field, num);
     } else {
-      const cleaned = valStr.replace(/[^0-9]/g, '');
-      const num = cleaned === '' ? 0 : parseInt(cleaned, 10);
+      const cleaned = firstSegment.replace(/[^0-9]/g, '');
+      let num = cleaned === '' ? 0 : parseInt(cleaned, 10);
+      if (isNaN(num)) num = 0;
+      if (num > MAX_LIMIT) num = MAX_LIMIT;
       updateField(field, num);
     }
   };

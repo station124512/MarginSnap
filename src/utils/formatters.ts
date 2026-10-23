@@ -1,7 +1,7 @@
 import { Currency } from '../types/margin';
 
 export function formatCurrency(value: number, currency: Currency = 'KRW'): string {
-  if (isNaN(value)) return '0';
+  if (isNaN(value) || !isFinite(value)) return '0';
 
   if (currency === 'USD') {
     return `$${Number(value).toLocaleString('en-US', {
@@ -19,7 +19,7 @@ export function formatCurrency(value: number, currency: Currency = 'KRW'): strin
 }
 
 export function formatSignedCurrency(value: number, currency: Currency = 'KRW'): string {
-  if (isNaN(value)) return '0';
+  if (isNaN(value) || !isFinite(value)) return '0';
   const prefix = value > 0 ? '+ ' : value < 0 ? '- ' : '';
   const absVal = Math.abs(value);
 
@@ -38,7 +38,8 @@ export function formatSignedCurrency(value: number, currency: Currency = 'KRW'):
 }
 
 export function formatPercent(value: number): string {
-  if (isNaN(value)) return '0.0%';
+  if (isNaN(value) || !isFinite(value)) return '0.0%';
+  if (Math.abs(value) > 99999) return '>99,999%';
   return `${Number(value).toFixed(1)}%`;
 }
 

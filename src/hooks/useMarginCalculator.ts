@@ -88,10 +88,23 @@ export function useMarginCalculator() {
   const [input, setInput] = useState<MarginInputState>(() => {
     try {
       const saved = localStorage.getItem('seller_margin_current_input_v2');
-      return saved ? JSON.parse(saved) : DEFAULT_INPUT;
-    } catch {
-      return DEFAULT_INPUT;
-    }
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (
+          parsed &&
+          typeof parsed.salePrice === 'number' &&
+          parsed.salePrice > 0 &&
+          parsed.salePrice <= 100_000_000 &&
+          typeof parsed.productCost === 'number' &&
+          parsed.productCost <= 100_000_000
+        ) {
+          return parsed;
+        } else {
+          localStorage.removeItem('seller_margin_current_input_v2');
+        }
+      }
+    } catch {}
+    return DEFAULT_INPUT;
   });
 
   const [reverseInput, setReverseInput] = useState<ReverseInputState>(DEFAULT_REVERSE);
