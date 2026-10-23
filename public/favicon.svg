@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="snapGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="50%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <!-- Squircle Background with Gradient -->
+  <rect width="32" height="32" rx="8" fill="url(#snapGrad)" />
+  
+  <!-- Snap Viewfinder Brackets [ ] -->
+  <path d="M5 10V7C5 5.895 5.895 5 7 5H10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" />
+  <path d="M22 5H25C26.105 5 27 5.895 27 7V10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" />
+  <path d="M5 22V25C5 26.105 5.895 27 7 27H10" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" />
+  <path d="M22 27H25C26.105 27 27 26.105 27 25V22" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-opacity="0.9" />
+  
+  <!-- Rising Profit Arrow ↗ -->
+  <path d="M10 22L21 11" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" />
+  <path d="M15 11H21V17" stroke="#FFFFFF" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" />
+  
+  <!-- Percentage Nodes % -->
+  <circle cx="12" cy="12.5" r="1.8" fill="#FFFFFF" />
+  <circle cx="20" cy="20.5" r="1.8" fill="#FFFFFF" />
+</svg>
