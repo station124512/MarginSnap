@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sanctuary Studio — Arthur Kim</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Newsreader and Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-surface": "#30312f",
+            "tertiary-container": "#623c00",
+            "tertiary-fixed": "#ffddb8",
+            "on-tertiary-container": "#f69f0d",
+            "secondary-fixed-dim": "#c0c8c2",
+            "background": "#fbf9f6",
+            "tertiary-fixed-dim": "#ffb95f",
+            "surface-tint": "#466558",
+            "primary": "#153328",
+            "outline": "#727974",
+            "primary-container": "#2c4a3e",
+            "on-error-container": "#93000a",
+            "on-secondary-fixed": "#161d19",
+            "surface-container-low": "#f5f3f0",
+            "secondary": "#58605b",
+            "surface-variant": "#e4e2df",
+            "surface-dim": "#dbdad7",
+            "on-primary-container": "#98b9a9",
+            "error-container": "#ffdad6",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#eae8e5",
+            "secondary-container": "#dae2db",
+            "on-surface": "#1b1c1a",
+            "on-primary-fixed": "#012016",
+            "inverse-primary": "#adcebe",
+            "on-secondary-container": "#5c645f",
+            "secondary-fixed": "#dce4de",
+            "on-tertiary-fixed": "#2a1700",
+            "surface-container": "#efeeeb",
+            "on-tertiary-fixed-variant": "#653e00",
+            "primary-fixed-dim": "#adcebe",
+            "surface-container-highest": "#e4e2df",
+            "outline-variant": "#c1c8c3",
+            "on-error": "#ffffff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#f2f0ed",
+            "on-primary-fixed-variant": "#2f4d41",
+            "on-background": "#1b1c1a",
+            "error": "#ba1a1a",
+            "surface-bright": "#fbf9f6",
+            "primary-fixed": "#c8eada",
+            "on-tertiary": "#ffffff",
+            "on-secondary-fixed-variant": "#414944",
+            "on-secondary": "#ffffff",
+            "tertiary": "#442800",
+            "surface": "#fbf9f6"
+          },
+          "borderRadius": {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin": "3rem",
+            "margin-mobile": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-lg": "2rem",
+            "space-xs": "0.375rem",
+            "space-sm": "0.75rem",
+            "space-md": "1.25rem",
+            "gutter": "1.5rem",
+            "space-xl": "3.5rem"
+          },
+          "fontFamily": {
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "headline-lg": ["Newsreader"],
+            "display-lg-mobile": ["Newsreader"],
+            "display-lg": ["Newsreader"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Newsreader"],
+            "body-md": ["Plus Jakarta Sans"],
+            "headline-md": ["Newsreader"]
+          },
+          "fontSize": {
+            "label-lg": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+            "title-lg": ["20px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "headline-lg": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-lg-mobile": ["38px", { "lineHeight": "46px", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.03em", "fontWeight": "500" }],
+            "title-md": ["16px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "headline-lg-mobile": ["28px", { "lineHeight": "36px", "fontWeight": "400" }],
+            "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "headline-md": ["26px", { "lineHeight": "34px", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .custom-scroll {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    @keyframes gentle-pulse {
+      0%, 100% { opacity: 0.9; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+    .animate-gentle {
+      animation: gentle-pulse 4s ease-in-out infinite;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased flex justify-center items-center min-h-screen selection:bg-secondary-container">
+<!-- Mobile Simulator Device Shell -->
+<main class="w-full max-w-md h-screen max-h-[880px] bg-background relative flex flex-col overflow-hidden shadow-2xl rounded-none md:rounded-3xl border-0 md:border md:border-outline-variant/30">
+<!-- 1. TOP LIVE CANVAS PREVIEW AREA (approx 48-50% Viewport) -->
+<section class="relative w-full h-[47%] min-h-[385px] overflow-hidden flex flex-col justify-between shrink-0 select-none">
+<!-- Serene Garden Backdrop -->
+<img alt="Serene mossy forest garden backdrop with morning mist and sun rays" class="absolute inset-0 w-full h-full object-cover pointer-events-none scale-105 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida/AEtjO1UaGhtCRXLcXxhjEVbgvd74QYkPDCqHTVzx1uGFZWapAueYXBMCs4Xi8q8bscXeG67FE66D8qR4LNhiyrgrql5f5Q-CYn4u51BA7RwbIU1ctb-Yzjqn3o4-ycR2K42f-vS21r_zSKA7TUuvWBVtXzR-FGUy9TCDgfKudsZuK9xi6MGGFwa1APcrcAA0Hcuzj0bLi0k5PoUTtwnUqzO_mdEt-i3SqJ6ZpAy70eeDeHsAxoAke3yKJXYst7U"/>
+<!-- Ambient Lighting & Gradient Scrims -->
+<div class="absolute inset-0 bg-gradient-to-b from-primary/60 via-transparent to-primary/80 pointer-events-none"></div>
+<div class="absolute inset-0 bg-radial from-transparent via-primary/20 to-primary/70 pointer-events-none"></div>
+<!-- Top App Bar (Material 3 Style) -->
+<header class="relative z-30 pt-4 px-4 flex items-center justify-between">
+<button aria-label="뒤로 가기" class="w-10 h-10 rounded-full bg-surface-container-lowest/70 backdrop-blur-md text-primary flex items-center justify-center hover:bg-surface-container-lowest transition-colors shadow-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[20px]">arrow_back</span>
+</button>
+<div class="flex flex-col items-center">
+<div class="flex items-center gap-1.5">
+<h1 class="text-headline-md font-headline-md text-surface-container-lowest drop-shadow-sm font-normal text-[20px]">에셋 샌드박스 스튜디오</h1>
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed animate-ping"></span>
+</div>
+<span class="text-label-sm font-label-sm text-surface-variant/90 drop-shadow-sm tracking-wide">Arthur Kim Memorial</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button aria-label="미리보기" class="px-2.5 py-1.5 rounded-full bg-surface-container-lowest/60 backdrop-blur-md text-surface-container-lowest text-label-sm font-label-sm border border-white/25 hover:bg-surface-container-lowest/80 transition-colors shadow-sm flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[15px]">visibility</span>
+<span>미리보기</span>
+</button>
+<button class="bg-primary-container text-on-primary px-3 py-1.5 rounded-full text-label-sm font-label-lg shadow-md hover:bg-primary transition-all active:scale-95 flex items-center gap-1" type="button">
+<span class="material-symbols-outlined text-[15px]">check_circle</span>
+<span>완료</span>
+</button>
+</div>
+</header>
+<!-- Live Sandbox Status Pill -->
+<div class="relative z-20 px-4 flex justify-between items-center -mt-1"><!-- 2.5D Freeform Interactive Canvas Stage -->
+<div class="relative w-full h-full min-h-[310px] select-none">
+<!-- Memorial Token 1: Wildflowers Bouquet (Freeform movable object) -->
+<div class="absolute left-4 bottom-5 flex flex-col items-center cursor-grab active:cursor-grabbing group transition-transform hover:scale-105">
+<div class="w-11 h-11 rounded-2xl bg-surface-container-lowest/40 backdrop-blur-md flex items-center justify-center text-2xl shadow-sm border border-white/25 drop-shadow hover:border-tertiary-fixed/60 transition-colors">
+      💐
+    </div>
+<span class="text-[9px] font-label-sm text-surface-variant/90 drop-shadow mt-0.5">백합 꽃다발</span>
+</div>
+<!-- Memorial Token 2: Handwritten Memory Card -->
+<div class="absolute left-3 top-8 cursor-grab active:cursor-grabbing group transition-transform hover:scale-105">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-tertiary-fixed-dim/60 shadow-md text-left max-w-[110px]">
+<div class="flex items-center gap-1 text-[8px] text-tertiary font-semibold mb-0.5">
+<span class="material-symbols-outlined text-[10px] text-tertiary">edit_note</span>
+<span>추모 카드</span>
+</div>
+<p class="font-headline-md italic text-[10px] leading-tight text-on-surface">“늘 기억합니다”</p>
+</div>
+</div>
+<!-- Memorial Token 3: Morning Coffee Cup -->
+<div class="absolute right-5 top-12 flex flex-col items-center cursor-grab active:cursor-grabbing group transition-transform hover:scale-105">
+<div class="w-11 h-11 rounded-2xl bg-surface-container-lowest/40 backdrop-blur-md flex items-center justify-center text-2xl shadow-sm border border-white/25 drop-shadow hover:border-tertiary-fixed/60 transition-colors">
+      ☕
+    </div>
+<span class="text-[9px] font-label-sm text-surface-variant/90 drop-shadow mt-0.5">모닝 커피</span>
+</div>
+<!-- Memorial Token 4: Vintage Vinyl Record LP -->
+<div class="absolute right-4 bottom-5 flex flex-col items-center cursor-grab active:cursor-grabbing group transition-transform hover:scale-105">
+<div class="w-11 h-11 rounded-2xl bg-surface-container-lowest/40 backdrop-blur-md flex items-center justify-center text-2xl shadow-sm border border-white/25 drop-shadow hover:border-tertiary-fixed/60 transition-colors">
+      🎵
+    </div>
+<span class="text-[9px] font-label-sm text-surface-variant/90 drop-shadow mt-0.5">턴테이블 LP</span>
+</div>
+<!-- PRIMARY ACTIVE SELECTED OBJECT: Freeform Memorial Portrait (Arthur Kim) -->
+<div class="absolute left-1/2 -translate-x-1/2 top-14 flex flex-col items-center cursor-grab active:cursor-grabbing z-30 group">
+<!-- Floating M3 Mini Tooltip Toolbar (Positioned directly above selected object) -->
+<div class="absolute -top-11 left-1/2 -translate-x-1/2 bg-surface-container-lowest/90 backdrop-blur-md border border-white/30 rounded-full px-2 py-1 shadow-xl flex items-center gap-1.5 whitespace-nowrap z-40">
+<!-- Tooltip Action 1: 순서 (Layer order) -->
+<button aria-label="레이어 순서" class="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-primary hover:bg-secondary-container transition-colors text-[10px] font-label-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[13px]">swap_vert</span>
+<span class="font-medium">순서</span>
+</button>
+<span class="w-px h-3 bg-outline-variant/40"></span>
+<!-- Tooltip Action 2: 잠금 (Lock toggle) -->
+<button aria-label="위치 잠금" class="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-primary hover:bg-secondary-container transition-colors text-[10px] font-label-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[13px]">lock_open</span>
+<span class="font-medium">잠금</span>
+</button>
+<span class="w-px h-3 bg-outline-variant/40"></span>
+<!-- Tooltip Action 3: 소리 추가 (Attach sound/melody) -->
+<button aria-label="소리 추가" class="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-primary hover:bg-secondary-container transition-colors text-[10px] font-label-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[13px] text-tertiary-fixed-dim">mic</span>
+<span class="font-medium">소리 추가</span>
+</button>
+<span class="w-px h-3 bg-outline-variant/40"></span>
+<!-- Tooltip Action 4: 삭제 (Soft muted crimson delete) -->
+<button aria-label="에셋 삭제" class="flex items-center gap-0.5 px-2 py-0.5 rounded-full text-on-error-container bg-error-container/60 hover:bg-error-container transition-colors text-[10px] font-label-sm active:scale-95" type="button">
+<span class="material-symbols-outlined text-[13px]">delete</span>
+<span class="font-medium">삭제</span>
+</button>
+</div>
+<!-- Glowing Highlight Frame & Dashed Selection Boundary -->
+<div class="absolute -inset-2.5 rounded-2xl border-2 border-dashed border-tertiary-fixed bg-primary-container/20 backdrop-blur-[2px] shadow-lg"></div>
+<div class="absolute -inset-1 rounded-2xl bg-gradient-to-tr from-tertiary-fixed/30 via-transparent to-tertiary-fixed/40 blur-sm pointer-events-none"></div>
+<!-- 4 Tactile Corner Anchor Drag Handles (White circles with subtle amber border & drop shadow) -->
+<div aria-label="크기 및 회전 조절 핸들 (좌상단)" class="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-white border border-tertiary-fixed shadow-md"></div>
+<div aria-label="크기 및 회전 조절 핸들 (우상단)" class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-white border border-tertiary-fixed shadow-md"></div>
+<div aria-label="크기 및 회전 조절 핸들 (좌하단)" class="absolute -bottom-1 -left-1 w-2.5 h-2.5 rounded-full bg-white border border-tertiary-fixed shadow-md"></div>
+<div aria-label="크기 및 회전 조절 핸들 (우하단)" class="absolute -bottom-1.5 -right-1.5 w-4 h-4 rounded-full bg-tertiary-fixed text-primary border border-white shadow-md flex items-center justify-center cursor-se-resize hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[10px]">open_in_full</span>
+</div>
+<!-- Memorial Portrait Artwork (Arthur Kim) -->
+<div class="relative z-10 w-20 h-20 rounded-2xl p-1 bg-surface-container-lowest/90 backdrop-blur-sm shadow-xl ring-2 ring-tertiary-fixed/70 overflow-hidden flex items-center justify-center">
+<img alt="Arthur Kim memorial portrait" class="w-full h-full object-cover rounded-xl" src="https://lh3.googleusercontent.com/aida/AEtjO1XyPbtNeqagFkUpL34OugiSp80sJiOYTjtERJg10btrUF01-Y_yXoQO06oqycgqbIqCemFdmDefW_fCqoMuKot1rrXd29yxOxSUSZeeyQiX8qmx4oOBIuueJSpX1oDzptRmynQ6mubfmRZePSFf6MwW5UYYwn00n_-OBhKd8P9ptzkUa4igcValGSDoEWJL1VBpDTFRQJ0fdEG1Sd7qCdys7JdFxNLKtGUXESOGhsMG7u4bkh_YxtxcgEA"/>
+</div>
+<div class="relative z-10 -mt-2 bg-primary-container/90 text-surface-container-lowest backdrop-blur-md border border-white/20 rounded-full px-2.5 py-0.5 whitespace-nowrap text-[9px] font-label-sm shadow flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary-fixed"></span>
+<span>故 김아서 님 (1952 — 2024)</span>
+</div>
+</div>
+</div></div>
+<!-- Centerpiece Altar & Interactive Free-Placement Sticker Stage -->
+<div class="relative z-20 flex-1 flex flex-col items-center justify-between pb-2 pt-1">
+<!-- Arthur Kim Portrait Medallion in Warm Serene Halo -->
+<div class="relative group cursor-pointer mt-0.5">
+<div class="absolute -inset-2 rounded-full bg-gradient-to-tr from-tertiary-fixed/40 via-surface-container-lowest/30 to-tertiary-fixed/50 blur-md animate-gentle"></div>
+<div class="relative w-16 h-16 rounded-full p-1 bg-surface-container-lowest/80 backdrop-blur-sm shadow-xl ring-2 ring-tertiary-fixed/60">
+<img alt="Arthur Kim smiling portrait in traditional hanbok attire" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida/AEtjO1XyPbtNeqagFkUpL34OugiSp80sJiOYTjtERJg10btrUF01-Y_yXoQO06oqycgqbIqCemFdmDefW_fCqoMuKot1rrXd29yxOxSUSZeeyQiX8qmx4oOBIuueJSpX1oDzptRmynQ6mubfmRZePSFf6MwW5UYYwn00n_-OBhKd8P9ptzkUa4igcValGSDoEWJL1VBpDTFRQJ0fdEG1Sd7qCdys7JdFxNLKtGUXESOGhsMG7u4bkh_YxtxcgEA"/>
+</div>
+<div class="absolute -bottom-1.5 left-1/2 -translate-x-1/2 bg-primary-container/90 text-surface-container-lowest backdrop-blur-md border border-white/20 rounded-full px-2 py-0.5 whitespace-nowrap text-[9px] font-label-sm shadow">
+        1952 — 2024
+      </div>
+</div>
+<!-- 2.5D Ground Stage with Multiple Placed Cut-out Sticker Assets -->
+<div class="relative w-full max-w-[370px] h-32 mt-2 px-3">
+<!-- Sticker 1: Gentle White Lily Bouquet -->
+<div class="absolute left-4 bottom-3 flex flex-col items-center cursor-pointer group transition-transform hover:scale-105 active:scale-95">
+<div class="w-11 h-11 rounded-2xl bg-surface-container-lowest/35 backdrop-blur-md flex items-center justify-center text-2xl shadow-sm border border-white/25 drop-shadow">
+          💐
+        </div>
+<span class="text-[9px] font-label-sm text-surface-variant/90 drop-shadow mt-0.5">백합 꽃다발</span>
+</div>
+<!-- Sticker 2: Memory Card / Handwritten Note Sticky -->
+<div class="absolute left-20 top-2 cursor-pointer group transition-transform hover:scale-105 active:scale-95">
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-2.5 py-1.5 rounded-xl border border-tertiary-fixed-dim/60 shadow-md text-left max-w-[110px]">
+<div class="flex items-center gap-1 text-[8px] text-tertiary font-semibold mb-0.5">
+<span class="material-symbols-outlined text-[10px] text-tertiary">edit_note</span>
+<span>추모 카드</span>
+</div>
+<p class="font-headline-md italic text-[10px] leading-tight text-on-surface">“늘 기억합니다 - 민준”</p>
+</div>
+</div>
+<!-- Sticker 3: Retro Vinyl LP Record -->
+<div class="absolute right-4 bottom-4 flex flex-col items-center cursor-pointer group transition-transform hover:scale-105 active:scale-95">
+<div class="w-11 h-11 rounded-2xl bg-surface-container-lowest/35 backdrop-blur-md flex items-center justify-center text-2xl shadow-sm border border-white/25 drop-shadow">
+          🎵
+        </div>
+<span class="text-[9px] font-label-sm text-surface-variant/90 drop-shadow mt-0.5">턴테이블 LP</span>
+</div>
+<!-- Sticker 4: ACTIVE SELECTED STICKER (Warm Vintage Morning Coffee) with Tactile Touch Controller -->
+<div class="absolute left-1/2 -translate-x-1/2 top-4 flex flex-col items-center cursor-grab active:cursor-grabbing z-30 group">
+<!-- Soft Dashed Bounding Box -->
+<div class="absolute -inset-2.5 rounded-2xl border-2 border-dashed border-tertiary-fixed bg-primary-container/20 backdrop-blur-[2px]"></div>
+<!-- Mini-Controller: Layer Order Pill (Top-Left) -->
+<button aria-label="레이어 순서" class="absolute -top-6 -left-8 bg-surface-container-lowest/90 text-primary text-[9px] font-label-sm px-2 py-0.5 rounded-full shadow-md flex items-center gap-0.5 border border-outline-variant/40 hover:bg-surface-container transition-all active:scale-90" type="button">
+<span class="material-symbols-outlined text-[11px]">layers</span>
+<span>순서</span>
+</button>
+<!-- Mini-Controller: Rotate Pill (Top-Center) -->
+<button aria-label="회전 조절" class="absolute -top-7 left-1/2 -translate-x-1/2 bg-primary text-white text-[9px] font-label-sm px-2 py-0.5 rounded-full shadow-md flex items-center gap-1 border border-white/30 hover:bg-primary-container transition-all active:scale-90" type="button">
+<span class="material-symbols-outlined text-[12px] text-tertiary-fixed">rotate_right</span>
+<span>회전 12°</span>
+</button>
+<!-- Mini-Controller: Delete Pill in soft muted crimson (Top-Right) -->
+<button aria-label="스티커 삭제" class="absolute -top-6 -right-7 bg-error-container text-on-error-container text-[9px] font-label-sm px-1.5 py-0.5 rounded-full shadow-md flex items-center gap-0.5 border border-error/20 hover:bg-error hover:text-white transition-all active:scale-90" type="button">
+<span class="material-symbols-outlined text-[11px]">delete</span>
+<span>삭제</span>
+</button>
+<!-- Corner Accent Drag Handles -->
+<div class="absolute -top-1 -left-1 w-2.5 h-2.5 rounded-full bg-white border border-primary shadow"></div>
+<div class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-white border border-primary shadow"></div>
+<div class="absolute -bottom-1 -left-1 w-2.5 h-2.5 rounded-full bg-white border border-primary shadow"></div>
+<!-- Mini-Controller: Scale / Resize Corner Drag Handle (Bottom-Right) -->
+<div aria-label="크기 조절" class="absolute -bottom-2 -right-2 w-5 h-5 rounded-full bg-tertiary-fixed text-primary border border-white shadow-md flex items-center justify-center cursor-se-resize hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[12px]">open_in_full</span>
+</div>
+<!-- Sticker Element Artwork -->
+<div class="relative z-10 w-12 h-12 rounded-2xl bg-surface-container-lowest/80 backdrop-blur-md flex items-center justify-center text-3xl shadow-lg ring-1 ring-primary/40">
+          ☕
+        </div>
+<span class="relative z-10 text-[9px] font-label-sm text-tertiary-fixed font-semibold drop-shadow mt-1 whitespace-nowrap">모닝 커피 (선택됨)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. BOTTOM CUSTOMIZATION DRAWER SHEET (~52-50% Viewport) -->
+<section class="relative z-30 flex-1 bg-surface-container-lowest shadow-[0_-12px_40px_-6px_rgba(21,51,40,0.18)] flex flex-col border-t border-outline-variant/40 overflow-hidden">
+<!-- Material 3 Drag Handle Pill -->
+<div class="w-full pt-3 pb-2 flex justify-center cursor-grab active:cursor-grabbing">
+<div class="w-12 h-1.5 rounded-full bg-surface-dim"></div>
+</div>
+<!-- Drawer Header & Mode Switch -->
+<div class="px-5 pb-2">
+<div class="flex items-center justify-between">
+<div>
+<h2 class="font-title-md text-title-md text-primary leading-snug">자유 에셋 업로드 샌드박스</h2>
+<p class="text-body-sm font-body-sm text-secondary text-[12px] leading-tight mt-0.5">사진, 누끼 스티커, 음성 노트를 자유롭게 배치하세요</p>
+</div>
+<!-- M3 Pill Segmented Switch -->
+<div class="flex items-center p-1 bg-surface-container-low rounded-full border border-outline-variant/30">
+<button class="px-2.5 py-1 rounded-full bg-primary-container text-white text-[11px] font-label-sm font-medium shadow-xs transition-all" type="button">
+          자유 배치
+        </button>
+<button class="px-2.5 py-1 rounded-full text-secondary hover:text-on-surface text-[11px] font-label-sm transition-colors" type="button">
+          스마트 정렬
+        </button>
+</div>
+</div>
+</div>
+<!-- Scrollable Customizer Content -->
+<div class="flex-1 overflow-y-auto px-5 py-2 space-y-4 custom-scroll">
+<!-- SECTION 1: Material 3 Action Toolbar (5 Prominent Action Pills) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="text-[11px] font-label-sm text-secondary uppercase tracking-wider font-semibold">오브젝트 추가 도구함</span>
+<span class="text-[11px] font-label-sm text-tertiary font-medium">✨ AI 누끼화 지원</span>
+</div>
+<div class="grid grid-cols-5 gap-2">
+<!-- Action 1: Photo/GIF Upload -->
+<button class="flex flex-col items-center justify-center p-2 rounded-2xl bg-secondary-container text-on-secondary-fixed hover:bg-secondary-fixed border border-primary/20 transition-all shadow-xs group" type="button">
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">add_photo_alternate</span>
+</div>
+<span class="text-[10px] font-label-sm font-medium mt-1 leading-tight text-center">사진/GIF</span>
+</button>
+<!-- Action 2: AI One-Touch Cutout / Stickerizer -->
+<button class="flex flex-col items-center justify-center p-2 rounded-2xl bg-tertiary-fixed text-tertiary hover:bg-tertiary-fixed-dim border border-tertiary/20 transition-all shadow-xs group" type="button">
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-tertiary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+</div>
+<span class="text-[10px] font-label-sm font-semibold mt-1 leading-tight text-center">AI 누끼화</span>
+</button>
+<!-- Action 3: Sound Note Mapping -->
+<button class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low text-on-surface hover:bg-surface-container border border-outline-variant/40 transition-all shadow-xs group" type="button">
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</div>
+<span class="text-[10px] font-label-sm font-medium mt-1 leading-tight text-center">사운드</span>
+</button>
+<!-- Action 4: Custom Typography / Note -->
+<button class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low text-on-surface hover:bg-surface-container border border-outline-variant/40 transition-all shadow-xs group" type="button">
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">text_fields</span>
+</div>
+<span class="text-[10px] font-label-sm font-medium mt-1 leading-tight text-center">메모/텍스트</span>
+</button>
+<!-- Action 5: Sanctuary Background Wallpaper -->
+<button class="flex flex-col items-center justify-center p-2 rounded-2xl bg-surface-container-low text-on-surface hover:bg-surface-container border border-outline-variant/40 transition-all shadow-xs group" type="button">
+<div class="w-9 h-9 rounded-full bg-surface-container-lowest flex items-center justify-center text-primary group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">wallpaper</span>
+</div>
+<span class="text-[10px] font-label-sm font-medium mt-1 leading-tight text-center">배경 설정</span>
+</button>
+</div>
+</div>
+<!-- SECTION 2: Asset Tray (나의 스티커 보관함) -->
+<div>
+<div class="flex items-center justify-between mb-2">
+<div class="flex items-center gap-1.5">
+<span class="font-title-md text-title-md text-primary text-[15px]">나의 스티커 보관함</span>
+<span class="bg-secondary-container text-on-secondary-container px-2 py-0.5 rounded-full text-[10px] font-label-sm">6개 보유</span>
+</div>
+<button class="text-label-sm font-label-sm text-secondary hover:text-primary transition-colors flex items-center text-[12px]" type="button">
+          전체보기 <span class="material-symbols-outlined text-[14px] ml-0.5">chevron_right</span>
+</button>
+</div>
+<!-- Horizontal Scrollable Sticker Row -->
+<div class="flex gap-2.5 overflow-x-auto pb-1 pt-0.5 custom-scroll snap-x">
+<!-- Card 0: Upload New Custom Cutout -->
+<button class="snap-start shrink-0 w-24 h-28 rounded-2xl border-2 border-dashed border-outline-variant/60 hover:border-primary bg-surface-container-low flex flex-col items-center justify-center p-2 text-secondary hover:text-primary transition-all group" type="button">
+<div class="w-8 h-8 rounded-full bg-surface-container-lowest shadow-xs flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-[18px]">cloud_upload</span>
+</div>
+<span class="text-[11px] font-label-sm font-semibold">직접 등록</span>
+<span class="text-[9px] text-secondary">PNG 투명 누끼</span>
+</button>
+<!-- Card 1: Warm Morning Coffee (Selected / Placed) -->
+<div class="snap-start shrink-0 w-24 h-28 rounded-2xl border-2 border-primary-container bg-primary/5 p-2 relative flex flex-col items-center justify-between cursor-pointer shadow-xs group">
+<div class="absolute top-1.5 right-1.5 bg-primary-container text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow">
+<span class="material-symbols-outlined text-[11px]">check</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/80 shadow-xs flex items-center justify-center text-2xl mt-1">
+            ☕
+          </div>
+<div class="text-center w-full">
+<p class="text-[11px] font-title-md text-primary truncate leading-tight">모닝 커피</p>
+<span class="text-[9px] font-label-sm text-primary-container font-medium block">배치중</span>
+</div>
+</div>
+<!-- Card 2: Gentle White Lilies (Placed) -->
+<div class="snap-start shrink-0 w-24 h-28 rounded-2xl border border-outline-variant/60 bg-surface-container-low p-2 relative flex flex-col items-center justify-between cursor-pointer hover:border-primary-container transition-all shadow-xs group">
+<div class="absolute top-1.5 right-1.5 bg-secondary text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow">
+<span class="material-symbols-outlined text-[11px]">check</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/80 shadow-xs flex items-center justify-center text-2xl mt-1">
+            💐
+          </div>
+<div class="text-center w-full">
+<p class="text-[11px] font-title-md text-on-surface truncate leading-tight">백합 꽃다발</p>
+<span class="text-[9px] font-label-sm text-secondary block">배치중</span>
+</div>
+</div>
+<!-- Card 3: Vinyl Record LP (Placed) -->
+<div class="snap-start shrink-0 w-24 h-28 rounded-2xl border border-outline-variant/60 bg-surface-container-low p-2 relative flex flex-col items-center justify-between cursor-pointer hover:border-primary-container transition-all shadow-xs group">
+<div class="absolute top-1.5 right-1.5 bg-secondary text-white w-4 h-4 rounded-full flex items-center justify-center text-[9px] font-bold shadow">
+<span class="material-symbols-outlined text-[11px]">check</span>
+</div>
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/80 shadow-xs flex items-center justify-center text-2xl mt-1">
+            🎵
+          </div>
+<div class="text-center w-full">
+<p class="text-[11px] font-title-md text-on-surface truncate leading-tight">LP 레코드</p>
+<span class="text-[9px] font-label-sm text-secondary block">배치중</span>
+</div>
+</div>
+<!-- Card 4: Brass Candle Lamp -->
+<div class="snap-start shrink-0 w-24 h-28 rounded-2xl border border-outline-variant/60 bg-surface-container-low p-2 relative flex flex-col items-center justify-between cursor-pointer hover:border-primary-container transition-all shadow-xs group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/80 shadow-xs flex items-center justify-center text-2xl mt-1">
+            🕯️
+          </div>
+<div class="text-center w-full">
+<p class="text-[11px] font-title-md text-on-surface truncate leading-tight">황동 촛대</p>
+<span class="text-[9px] font-label-sm text-secondary block">대기중</span>
+</div>
+</div>
+<!-- Card 5: Analog Camera -->
+<div class="snap-start shrink-0 w-24 h-28 rounded-2xl border border-outline-variant/60 bg-surface-container-low p-2 relative flex flex-col items-center justify-between cursor-pointer hover:border-primary-container transition-all shadow-xs group">
+<div class="w-12 h-12 rounded-xl bg-surface-container-lowest/80 shadow-xs flex items-center justify-center text-2xl mt-1">
+            📷
+          </div>
+<div class="text-center w-full">
+<p class="text-[11px] font-title-md text-on-surface truncate leading-tight">필름 카메라</p>
+<span class="text-[9px] font-label-sm text-secondary block">대기중</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Hint Banner -->
+<div class="px-3 py-2 bg-surface-container-low rounded-xl border border-outline-variant/30 flex items-center gap-2">
+<span class="text-[13px]">💡</span>
+<p class="text-[11px] font-body-sm text-secondary leading-tight">
+        캔버스의 스티커를 길게 누르면 크기 조절과 회전이 가능합니다.
+      </p>
+</div>
+</div>
+<!-- Bottom Sticky Action Bar -->
+<footer class="p-4 bg-surface-container-lowest border-t border-outline-variant/30 flex items-center gap-3">
+<button class="px-4 py-3 rounded-full bg-surface-container-low text-secondary hover:text-on-surface hover:bg-surface-container text-label-lg font-label-lg transition-colors flex items-center justify-center gap-1 shrink-0 active:scale-95" type="button">
+<span class="material-symbols-outlined text-[18px]">restart_alt</span>
+<span>초기화</span>
+</button>
+<button class="flex-1 py-3 rounded-full bg-primary text-white text-label-lg font-label-lg shadow-md hover:bg-primary-container transition-all flex items-center justify-center gap-2 active:scale-98" type="button">
+<span class="material-symbols-outlined text-[18px]">save</span>
+<span>샌드박스 씬 저장하기</span>
+</button>
+</footer>
+</section>
+</main>
+</body></html>
