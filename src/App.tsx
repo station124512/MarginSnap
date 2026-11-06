@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import HomeLandingPage from './app/page';
 import SanctuaryStudioPage from './app/studio/page';
 import SanctuaryVisitorPage from './app/sanctuary/[id]/page';
+import MarginCalculatorPage from './app/margin/page';
 
 export const App: React.FC = () => {
   return (
@@ -16,6 +17,10 @@ export const App: React.FC = () => {
 
         {/* 3. /sanctuary/[id] (방문객용 실제 추모관) */}
         <Route path="/sanctuary/:id" element={<SanctuaryVisitorPage />} />
+
+        {/* 4. /margin & /calculator (마진스냅 스마트 셀러 계산기) */}
+        <Route path="/margin" element={<MarginCalculatorPage />} />
+        <Route path="/calculator" element={<MarginCalculatorPage />} />
 
         {/* Fallback */}
         <Route path="*" element={<Navigate to="/" replace />} />

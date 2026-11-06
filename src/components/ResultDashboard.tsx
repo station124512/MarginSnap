@@ -26,10 +26,30 @@ export const ResultDashboard: React.FC<ResultDashboardProps> = ({
   t,
 }) => {
   const currentPlatform = PLATFORM_PRESETS[input.platform] || PLATFORM_PRESETS.COUPANG_WING;
-  const currency = currentPlatform.currency;
+  const isForeign = currentPlatform.currency !== 'KRW';
+  const isUSD = currentPlatform.currency === 'USD';
+  const currency = input.inputInKrw ? 'KRW' : currentPlatform.currency;
+  const rate = isUSD ? (input.exchangeRateUsd || 1400) : (input.exchangeRateJpy || 9.3);
 
   const isDanger = result.healthStatus === 'DANGER';
   const isWarning = result.healthStatus === 'WARNING';
+
+  // 원화 및 외화 상호 환산 보조 텍스트 렌더러
+  const renderDualAmount = (val: number, isNegative = false) => {
+    if (!isForeign || !val) return null;
+    const prefix = isNegative ? '- ' : '';
+    if (input.inputInKrw) {
+      // 현재 원화 기준 -> 외화 환산액 표기
+      const foreignVal = isUSD
+        ? `$${(Math.abs(val) / rate).toFixed(2)}`
+        : `¥${Math.round(Math.abs(val) / rate).toLocaleString()}`;
+      return <span className="text-[11px] text-blue-600 font-semibold ml-1.5 font-mono">({prefix}{foreignVal})</span>;
+    } else {
+      // 현재 외화 기준 -> 원화 환산액 표기
+      const krwVal = `₩${Math.round(Math.abs(val) * rate).toLocaleString()}`;
+      return <span className="text-[11px] text-blue-600 font-semibold ml-1.5 font-mono">({prefix}{krwVal})</span>;
+    }
+  };
 
   return (
     <div className="space-y-4">
@@ -115,6 +135,19 @@ export const ResultDashboard: React.FC<ResultDashboardProps> = ({
           >
             {formatSignedCurrency(result.netProfit, currency)}
           </div>
+          {/* 해외 플랫폼일 때 원화/외화 환산 금액 한눈에 표시 */}
+          {isForeign && (
+            <div className="mt-1 flex items-center gap-1.5 flex-wrap">
+              <span className="text-base sm:text-lg font-black text-blue-600">
+                ≈ {input.inputInKrw
+                  ? formatSignedCurrency(result.netProfit / rate, currentPlatform.currency)
+                  : formatSignedCurrency(result.netProfit * rate, 'KRW')}
+              </span>
+              <span className="text-xs font-normal text-slate-400">
+                ({isUSD ? `환율 1$ = ${rate.toLocaleString()}원` : `환율 1¥ = ${rate.toLocaleString()}원`})
+              </span>
+            </div>
+          )}
           <p className="text-xs text-slate-400 mt-1 font-medium">{t.netProfitSub}</p>
         </div>
 
@@ -165,48 +198,69 @@ export const ResultDashboard: React.FC<ResultDashboardProps> = ({
         <div className="space-y-2.5 text-xs">
           <div className="flex justify-between py-1 border-b border-slate-100 font-bold text-slate-900 text-sm">
             <span>{t.flowRevenue}</span>
-            <span>{formatCurrency(result.grossRevenue, currency)}</span>
+            <div className="text-right">
+              <span>{formatCurrency(result.grossRevenue, currency)}</span>
+              {renderDualAmount(result.grossRevenue)}
+            </div>
           </div>
 
           <div className="flex justify-between py-0.5 text-red-600 font-medium">
             <span>{t.flowFee}</span>
-            <span>- {formatCurrency(result.totalPlatformFee, currency)}</span>
+            <div className="text-right">
+              <span>- {formatCurrency(result.totalPlatformFee, currency)}</span>
+              {renderDualAmount(result.totalPlatformFee, true)}
+            </div>
           </div>
 
           {/* 실 정산액 하이라이트 */}
           <div className="flex justify-between py-2 px-3 bg-blue-50/70 border border-blue-100/80 rounded-xl font-bold text-blue-900">
             <span>{t.flowSettlement}</span>
-            <span className="text-sm font-black">
-              {formatCurrency(result.settlementAmount, currency)}
-            </span>
+            <div className="text-right">
+              <span className="text-sm font-black">
+                {formatCurrency(result.settlementAmount, currency)}
+              </span>
+              {renderDualAmount(result.settlementAmount)}
+            </div>
           </div>
 
           <div className="flex justify-between py-0.5 text-slate-500 pt-1">
             <span>{t.productCost}</span>
-            <span className="font-semibold text-slate-700">
-              - {formatCurrency(result.productCost, currency)}
-            </span>
+            <div className="text-right">
+              <span className="font-semibold text-slate-700">
+                - {formatCurrency(result.productCost, currency)}
+              </span>
+              {renderDualAmount(result.productCost, true)}
+            </div>
           </div>
 
           <div className="flex justify-between py-0.5 text-slate-500">
             <span>{t.actualShippingFee} + {t.packagingCost}</span>
-            <span className="font-semibold text-slate-700">
-              - {formatCurrency(result.actualShippingFee + result.packagingCost, currency)}
-            </span>
+            <div className="text-right">
+              <span className="font-semibold text-slate-700">
+                - {formatCurrency(result.actualShippingFee + result.packagingCost, currency)}
+              </span>
+              {renderDualAmount(result.actualShippingFee + result.packagingCost, true)}
+            </div>
           </div>
 
           {result.adCost > 0 && (
             <div className="flex justify-between py-0.5 text-purple-600 font-medium">
               <span>{t.labelAd}</span>
-              <span>- {formatCurrency(result.adCost, currency)}</span>
+              <div className="text-right">
+                <span>- {formatCurrency(result.adCost, currency)}</span>
+                {renderDualAmount(result.adCost, true)}
+              </div>
             </div>
           )}
 
           <div className="flex justify-between py-0.5 text-slate-400">
             <span>{t.labelTax}</span>
-            <span>
-              - {formatCurrency(result.estimatedVat + result.returnReserveCost, currency)}
-            </span>
+            <div className="text-right">
+              <span>
+                - {formatCurrency(result.estimatedVat + result.returnReserveCost, currency)}
+              </span>
+              {renderDualAmount(result.estimatedVat + result.returnReserveCost, true)}
+            </div>
           </div>
         </div>
       </div>

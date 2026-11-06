@@ -15,10 +15,19 @@ export function calculateMargin(
   lang: Language = 'KO'
 ): MarginResult {
   const platformConfig = PLATFORM_PRESETS[input.platform] || PLATFORM_PRESETS.COUPANG_WING;
+  const isForeign = platformConfig.currency !== 'KRW';
   const isUSD = platformConfig.currency === 'USD';
   const t = TRANSLATIONS[lang] || TRANSLATIONS.KO;
 
-  const roundVal = (v: number) => (isUSD ? Number(v.toFixed(2)) : Math.round(v));
+  const exchangeRate =
+    platformConfig.currency === 'USD'
+      ? input.exchangeRateUsd || 1400
+      : platformConfig.currency === 'JPY'
+      ? input.exchangeRateJpy || 9.3
+      : 1;
+
+  // 원화 입력 모드일 때는 정수(원 단위) 라운딩
+  const roundVal = (v: number) => (isUSD && !input.inputInKrw ? Number(v.toFixed(2)) : Math.round(v));
 
   // 1. 유효 수수료율 결정
   let saleFeeRate = input.customFeeRate;
@@ -146,6 +155,21 @@ export function calculateMargin(
     healthStatus,
     healthTitle,
     healthMessage,
+    krwEquivalent: isForeign
+      ? {
+          exchangeRate,
+          currency: platformConfig.currency,
+          grossRevenue: input.inputInKrw ? grossRevenue : Math.round(grossRevenue * exchangeRate),
+          totalPlatformFee: input.inputInKrw ? totalPlatformFee : Math.round(totalPlatformFee * exchangeRate),
+          settlementAmount: input.inputInKrw ? settlementAmount : Math.round(settlementAmount * exchangeRate),
+          productCost: input.inputInKrw ? productCost : Math.round(productCost * exchangeRate),
+          actualShippingFee: input.inputInKrw ? actualShippingFee : Math.round(actualShippingFee * exchangeRate),
+          packagingCost: input.inputInKrw ? packagingCost : Math.round(packagingCost * exchangeRate),
+          adCost: input.inputInKrw ? adCost : Math.round(adCost * exchangeRate),
+          totalExpense: input.inputInKrw ? totalExpense : Math.round(totalExpense * exchangeRate),
+          netProfit: input.inputInKrw ? netProfit : Math.round(netProfit * exchangeRate),
+        }
+      : undefined,
     costBreakdownPercentages: {
       product: productPct,
       platformFee: feePct,
@@ -206,11 +230,11 @@ export function calculateReversePrice(
     }
   }
 
-  // 통화별 깔끔한 라운딩: USD는 0.1달러 절상 또는 .99 책정, KRW는 100원, JPY는 10엔 절상
+  // 통화별 깔끔한 라운딩: USD는 0.1달러 절상 또는 .99 책정, KRW(또는 원화모드)는 100원, JPY는 10엔 절상
   let recommendedPrice = 0;
-  if (isUSD) {
+  if (isUSD && !input.inputInKrw) {
     recommendedPrice = Number((Math.ceil(rawPrice * 10) / 10).toFixed(2));
-  } else if (platformConfig.currency === 'JPY') {
+  } else if (platformConfig.currency === 'JPY' && !input.inputInKrw) {
     recommendedPrice = Math.ceil(rawPrice / 10) * 10;
   } else {
     recommendedPrice = Math.ceil(rawPrice / 100) * 100;

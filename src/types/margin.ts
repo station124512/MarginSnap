@@ -52,6 +52,11 @@ export interface MarginInputState {
   adCostPerUnit: number;
   returnReserveRate: number; // %
   taxType: TaxType;
+
+  // 해외 플랫폼 환율 및 원화(KRW) 계산 모드
+  exchangeRateUsd?: number; // 1 USD = 원 (기본 1400)
+  exchangeRateJpy?: number; // 1 JPY = 원 (기본 9.3, 100엔 = 930원)
+  inputInKrw?: boolean;     // 해외 플랫폼일 때 원화(₩) 기준으로 입력 및 계산
 }
 
 export interface ReverseInputState {
@@ -67,6 +72,11 @@ export interface ReverseInputState {
   customFeeRate: number;
   customerShippingFee: number;
   taxType: TaxType;
+
+  // 해외 플랫폼 환율 및 원화(KRW) 계산 모드
+  exchangeRateUsd?: number;
+  exchangeRateJpy?: number;
+  inputInKrw?: boolean;
 }
 
 export interface MarginResult {
@@ -92,6 +102,21 @@ export interface MarginResult {
   healthStatus: HealthStatus;
   healthTitle: string;
   healthMessage: string;
+
+  // 해외 마켓일 때 원화(KRW) 환산 정보
+  krwEquivalent?: {
+    exchangeRate: number;
+    currency: Currency;
+    grossRevenue: number;
+    totalPlatformFee: number;
+    settlementAmount: number;
+    productCost: number;
+    actualShippingFee: number;
+    packagingCost: number;
+    adCost: number;
+    totalExpense: number;
+    netProfit: number;
+  };
 
   costBreakdownPercentages: {
     product: number;

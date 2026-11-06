@@ -94,7 +94,18 @@ export default function HomeLandingPage() {
             </div>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* 마진스냅 계산기 바로가기 */}
+            <button
+              type="button"
+              onClick={() => navigate('/margin')}
+              className="px-2.5 sm:px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-200/80 text-xs font-semibold hover:bg-blue-100/70 transition-colors cursor-pointer flex items-center gap-1"
+              title="글로벌 이커머스 마진 계산기 마진스냅"
+            >
+              <span>📊</span>
+              <span className="hidden sm:inline">마진스냅</span>
+            </button>
+
             {/* 언어 스위처 */}
             <button
               type="button"

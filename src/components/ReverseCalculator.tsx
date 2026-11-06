@@ -1,5 +1,5 @@
 import React from 'react';
-import { Target, Check, Store, ChevronDown, Sparkles } from 'lucide-react';
+import { Target, Check, Store, ChevronDown, Sparkles, ArrowRightLeft } from 'lucide-react';
 import { ReverseInputState, ReverseCalculationResult } from '../types/margin';
 import { PLATFORM_PRESETS } from '../constants/feePresets';
 import { TranslationDictionary } from '../constants/translations';
@@ -24,19 +24,25 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
 }) => {
   const currentPlatform =
     PLATFORM_PRESETS[reverseInput.platform] || PLATFORM_PRESETS.COUPANG_WING;
+  const isForeign = currentPlatform.currency !== 'KRW';
   const isUSD = currentPlatform.currency === 'USD';
-  const sym = currentPlatform.currencySymbol;
+  const rate = isUSD ? (reverseInput.exchangeRateUsd || 1400) : (reverseInput.exchangeRateJpy || 9.3);
+  const sym = reverseInput.inputInKrw ? '₩' : currentPlatform.currencySymbol;
 
   const updateField = (field: keyof ReverseInputState, value: any) => {
     setReverseInput((prev) => ({ ...prev, [field]: value }));
   };
 
+  // 1000 단위 이상 입력 시 쉼표(,) 때문에 잘리던 버그 완벽 수정
   const handlePriceInput = (field: keyof ReverseInputState, valStr: string) => {
-    const MAX_LIMIT = isUSD ? 1_000_000 : 100_000_000;
-    const firstSegment = valStr.trim().split(/[\r\n|,/]/)[0] || '';
+    const firstLine = valStr.trim().split(/[\r\n]+/)[0] || '';
+    const noCommas = firstLine.replace(/,/g, '');
 
-    if (isUSD) {
-      const cleaned = firstSegment.replace(/[^0-9.]/g, '');
+    const isFieldDecimal = isUSD && !reverseInput.inputInKrw;
+    const MAX_LIMIT = isFieldDecimal ? 1_000_000 : 100_000_000;
+
+    if (isFieldDecimal) {
+      const cleaned = noCommas.replace(/[^0-9.]/g, '');
       const parts = cleaned.split('.');
       const formatted = parts.length > 2 ? `${parts[0]}.${parts.slice(1).join('')}` : cleaned;
       let num = formatted === '' ? 0 : parseFloat(formatted);
@@ -44,7 +50,7 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
       if (num > MAX_LIMIT) num = MAX_LIMIT;
       updateField(field, num);
     } else {
-      const cleaned = firstSegment.replace(/[^0-9]/g, '');
+      const cleaned = noCommas.replace(/[^0-9]/g, '');
       let num = cleaned === '' ? 0 : parseInt(cleaned, 10);
       if (isNaN(num)) num = 0;
       if (num > MAX_LIMIT) num = MAX_LIMIT;
@@ -54,8 +60,28 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
 
   const displayVal = (num: number) => {
     if (!num && num !== 0) return '';
-    if (isUSD) return num.toString();
-    return num.toLocaleString();
+    if (num === 0) return '';
+    if (isUSD && !reverseInput.inputInKrw) return num.toString();
+    return num.toLocaleString('ko-KR');
+  };
+
+  const renderDualPreview = (val: number) => {
+    if (!isForeign || !val) return null;
+    if (reverseInput.inputInKrw) {
+      const foreignVal = isUSD ? (val / rate).toFixed(2) : Math.round(val / rate).toLocaleString();
+      return (
+        <span className="text-[11px] font-semibold text-blue-600 block mt-1">
+          ≈ {currentPlatform.currencySymbol}{foreignVal} (현지 통화 환산)
+        </span>
+      );
+    } else {
+      const krwVal = Math.round(val * rate).toLocaleString();
+      return (
+        <span className="text-[11px] font-semibold text-blue-600 block mt-1">
+          ≈ {krwVal}원 (환율 {rate.toLocaleString()}원 적용)
+        </span>
+      );
+    }
   };
 
   return (
@@ -111,18 +137,18 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                 <span className="text-blue-600 font-black">{reverseInput.targetValue}%</span>
               </div>
               <div className="grid grid-cols-4 gap-2">
-                {[15, 20, 25, 30].map((rate) => (
+                {[15, 20, 25, 30].map((rateVal) => (
                   <button
-                    key={rate}
+                    key={rateVal}
                     type="button"
-                    onClick={() => updateField('targetValue', rate)}
+                    onClick={() => updateField('targetValue', rateVal)}
                     className={`py-2 text-xs font-bold rounded-xl transition-all cursor-pointer ${
-                      reverseInput.targetValue === rate
+                      reverseInput.targetValue === rateVal
                         ? 'bg-blue-600 text-white shadow-sm shadow-blue-500/20'
                         : 'bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-100/60'
                     }`}
                   >
-                    {rate}%
+                    {rateVal}%
                   </button>
                 ))}
               </div>
@@ -138,11 +164,12 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                     type="text"
                     value={displayVal(reverseInput.targetValue)}
                     onChange={(e) => handlePriceInput('targetValue', e.target.value)}
-                    placeholder={isUSD ? '5.00' : '5,000'}
+                    placeholder={reverseInput.inputInKrw ? '5,000' : isUSD ? '5.00' : '5,000'}
                     className="w-full text-lg font-black text-slate-900 bg-transparent focus:outline-none tracking-tight"
                   />
                   <span className="text-xs font-bold text-slate-400">{sym}</span>
                 </div>
+                {renderDualPreview(reverseInput.targetValue)}
               </div>
             </div>
           )}
@@ -172,6 +199,55 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
               </button>
             ))}
           </div>
+
+          {/* 해외 플랫폼 환율 & 원화 역산 모드 배너 */}
+          {isForeign && (
+            <div className="p-3 bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200/80 rounded-2xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+              <div className="flex items-center gap-2">
+                <span className="text-base">💱</span>
+                <span className="text-xs font-black text-slate-800">
+                  {isUSD ? `1$ = ${rate.toLocaleString()}원` : `1¥ = ${rate.toLocaleString()}원`}
+                </span>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  const nextInKrw = !reverseInput.inputInKrw;
+                  if (nextInKrw) {
+                    setReverseInput((prev) => ({
+                      ...prev,
+                      inputInKrw: true,
+                      targetValue: prev.targetType === 'NET_PROFIT' ? Math.round(prev.targetValue * rate) : prev.targetValue,
+                      productCost: Math.round(prev.productCost * rate),
+                      actualShippingFee: Math.round(prev.actualShippingFee * rate),
+                      packagingCost: Math.round(prev.packagingCost * rate),
+                      adCostPerUnit: Math.round(prev.adCostPerUnit * rate),
+                      customerShippingFee: Math.round(prev.customerShippingFee * rate),
+                    }));
+                  } else {
+                    setReverseInput((prev) => ({
+                      ...prev,
+                      inputInKrw: false,
+                      targetValue: prev.targetType === 'NET_PROFIT' ? (isUSD ? Number((prev.targetValue / rate).toFixed(2)) : Math.round(prev.targetValue / rate)) : prev.targetValue,
+                      productCost: isUSD ? Number((prev.productCost / rate).toFixed(2)) : Math.round(prev.productCost / rate),
+                      actualShippingFee: isUSD ? Number((prev.actualShippingFee / rate).toFixed(2)) : Math.round(prev.actualShippingFee / rate),
+                      packagingCost: isUSD ? Number((prev.packagingCost / rate).toFixed(2)) : Math.round(prev.packagingCost / rate),
+                      adCostPerUnit: isUSD ? Number((prev.adCostPerUnit / rate).toFixed(2)) : Math.round(prev.adCostPerUnit / rate),
+                      customerShippingFee: isUSD ? Number((prev.customerShippingFee / rate).toFixed(2)) : Math.round(prev.customerShippingFee / rate),
+                    }));
+                  }
+                }}
+                className={`px-3 py-1 rounded-xl text-xs font-extrabold transition-all cursor-pointer flex items-center gap-1 shadow-xs active:scale-95 ${
+                  reverseInput.inputInKrw
+                    ? 'bg-blue-600 text-white shadow-blue-500/25'
+                    : 'bg-white text-slate-700 border border-slate-200 hover:bg-slate-50'
+                }`}
+              >
+                <ArrowRightLeft className="w-3.5 h-3.5" />
+                <span>{reverseInput.inputInKrw ? '🇰🇷 원화(₩) 기준 역산' : '🌐 외화 기준 역산'}</span>
+              </button>
+            </div>
+          )}
 
           {reverseInput.platform !== 'CUSTOM' ? (
             <div className="relative">
@@ -220,11 +296,12 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                 type="text"
                 value={displayVal(reverseInput.productCost)}
                 onChange={(e) => handlePriceInput('productCost', e.target.value)}
-                placeholder={isUSD ? '10.00' : '11,000'}
+                placeholder={reverseInput.inputInKrw ? '14,000' : isUSD ? '10.00' : '11,000'}
                 className="w-full text-lg font-black text-slate-900 bg-transparent focus:outline-none tracking-tight"
               />
-              <span className="text-xs font-bold text-slate-400">{sym}</span>
+              <span className="text-xs font-bold text-slate-400 ml-1">{sym}</span>
             </div>
+            {renderDualPreview(reverseInput.productCost)}
           </div>
 
           <div className="bg-slate-50/70 hover:bg-slate-100/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 border border-slate-200/80 rounded-2xl p-3.5 transition-all">
@@ -236,11 +313,12 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                 type="text"
                 value={displayVal(reverseInput.actualShippingFee)}
                 onChange={(e) => handlePriceInput('actualShippingFee', e.target.value)}
-                placeholder={isUSD ? '2.80' : '2,800'}
+                placeholder={reverseInput.inputInKrw ? '3,500' : isUSD ? '2.80' : '2,800'}
                 className="w-full text-lg font-black text-slate-900 bg-transparent focus:outline-none tracking-tight"
               />
-              <span className="text-xs font-bold text-slate-400">{sym}</span>
+              <span className="text-xs font-bold text-slate-400 ml-1">{sym}</span>
             </div>
+            {renderDualPreview(reverseInput.actualShippingFee)}
           </div>
 
           <div className="bg-slate-50/70 hover:bg-slate-100/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 border border-slate-200/80 rounded-2xl p-3.5 transition-all">
@@ -252,11 +330,12 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                 type="text"
                 value={displayVal(reverseInput.customerShippingFee)}
                 onChange={(e) => handlePriceInput('customerShippingFee', e.target.value)}
-                placeholder={isUSD ? '3.00' : '3,000'}
+                placeholder={reverseInput.inputInKrw ? '3,000' : isUSD ? '3.00' : '3,000'}
                 className="w-full text-lg font-black text-slate-900 bg-transparent focus:outline-none tracking-tight"
               />
-              <span className="text-xs font-bold text-slate-400">{sym}</span>
+              <span className="text-xs font-bold text-slate-400 ml-1">{sym}</span>
             </div>
+            {renderDualPreview(reverseInput.customerShippingFee)}
           </div>
 
           <div className="bg-slate-50/70 hover:bg-slate-100/60 focus-within:bg-white focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 border border-slate-200/80 rounded-2xl p-3.5 transition-all">
@@ -268,17 +347,20 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
                 type="text"
                 value={displayVal(reverseInput.packagingCost + reverseInput.adCostPerUnit)}
                 onChange={(e) => {
-                  const cleaned = isUSD
-                    ? e.target.value.replace(/[^0-9.]/g, '')
-                    : e.target.value.replace(/[^0-9]/g, '');
+                  const noCommas = e.target.value.replace(/,/g, '');
+                  const cleaned = isUSD && !reverseInput.inputInKrw
+                    ? noCommas.replace(/[^0-9.]/g, '')
+                    : noCommas.replace(/[^0-9]/g, '');
                   const num = cleaned === '' ? 0 : parseFloat(cleaned);
                   updateField('adCostPerUnit', isNaN(num) ? 0 : num);
                   updateField('packagingCost', 0);
                 }}
+                placeholder={reverseInput.inputInKrw ? '2,800' : isUSD ? '2.00' : '2,000'}
                 className="w-full text-lg font-black text-slate-900 bg-transparent focus:outline-none tracking-tight"
               />
-              <span className="text-xs font-bold text-slate-400">{sym}</span>
+              <span className="text-xs font-bold text-slate-400 ml-1">{sym}</span>
             </div>
+            {renderDualPreview(reverseInput.packagingCost + reverseInput.adCostPerUnit)}
           </div>
         </div>
       </div>
@@ -291,9 +373,23 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
             {t.reverseRecommendTitle}
           </span>
           <div className="text-3xl sm:text-4xl lg:text-5xl font-black text-blue-600 tracking-tight mt-3">
-            {formatCurrency(reverseResult.recommendedSalePrice, currentPlatform.currency)}
+            {formatCurrency(
+              reverseResult.recommendedSalePrice,
+              reverseInput.inputInKrw ? 'KRW' : currentPlatform.currency
+            )}
           </div>
-          <p className="text-xs text-slate-400 mt-1 font-medium">
+          {/* 해외 플랫폼일 때 원화/외화 상호 추천 금액 표시 */}
+          {isForeign && (
+            <div className="text-sm font-bold text-slate-600 mt-1">
+              ≈ {reverseInput.inputInKrw
+                ? formatCurrency(reverseResult.recommendedSalePrice / rate, currentPlatform.currency)
+                : formatCurrency(reverseResult.recommendedSalePrice * rate, 'KRW')}
+              <span className="text-xs font-normal text-slate-400 ml-1.5">
+                (환율 {rate.toLocaleString()}원 적용)
+              </span>
+            </div>
+          )}
+          <p className="text-xs text-slate-400 mt-1.5 font-medium">
             {t.reverseRecommendSub}
           </p>
         </div>
@@ -302,9 +398,21 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
         <div className="bg-slate-50/70 rounded-2xl p-4 border border-slate-100 space-y-2 text-xs">
           <div className="flex justify-between text-slate-500">
             <span>{t.netProfitLabel}</span>
-            <span className="font-black text-slate-900 text-sm">
-              {formatCurrency(reverseResult.targetNetProfit, currentPlatform.currency)}
-            </span>
+            <div className="text-right">
+              <span className="font-black text-slate-900 text-sm">
+                {formatCurrency(
+                  reverseResult.targetNetProfit,
+                  reverseInput.inputInKrw ? 'KRW' : currentPlatform.currency
+                )}
+              </span>
+              {isForeign && (
+                <span className="text-[11px] text-blue-600 font-bold block">
+                  ≈ {reverseInput.inputInKrw
+                    ? formatCurrency(reverseResult.targetNetProfit / rate, currentPlatform.currency)
+                    : formatCurrency(reverseResult.targetNetProfit * rate, 'KRW')}
+                </span>
+              )}
+            </div>
           </div>
           <div className="flex justify-between text-slate-500">
             <span>{t.marginRateLabel}</span>
@@ -315,13 +423,19 @@ export const ReverseCalculator: React.FC<ReverseCalculatorProps> = ({
           <div className="flex justify-between text-slate-500">
             <span>{t.flowFee}</span>
             <span className="text-red-600 font-medium">
-              - {formatCurrency(reverseResult.simulatedResult.totalPlatformFee, currentPlatform.currency)}
+              - {formatCurrency(
+                reverseResult.simulatedResult.totalPlatformFee,
+                reverseInput.inputInKrw ? 'KRW' : currentPlatform.currency
+              )}
             </span>
           </div>
           <div className="flex justify-between text-slate-500 pt-1 border-t border-slate-200/60">
             <span>{t.flowSettlement}</span>
             <span className="font-black text-slate-900">
-              {formatCurrency(reverseResult.simulatedResult.settlementAmount, currentPlatform.currency)}
+              {formatCurrency(
+                reverseResult.simulatedResult.settlementAmount,
+                reverseInput.inputInKrw ? 'KRW' : currentPlatform.currency
+              )}
             </span>
           </div>
         </div>
